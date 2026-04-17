@@ -253,6 +253,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ---- AI Study Plan Generator ----
+  window.generateAIStudyPlan = async () => {
+    const btn = document.getElementById('aiGenerateStudyPlanBtn');
+    if(!btn) return;
+    
+    // UI Loading state
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span>🤖</span> Analyzing your profile...';
+    btn.disabled = true;
+    
+    // Simulate AI API Call
+    await new Promise(r => setTimeout(r, 1500));
+    btn.innerHTML = '<span>🤖</span> Curating topics...';
+    await new Promise(r => setTimeout(r, 1000));
+    
+    // Simulate updating progress of topics based on "AI"
+    topicsData.dsa.topics[0].progress = 100;
+    topicsData.dsa.topics[1].progress = 85;
+    topicsData.system.topics[0].progress = 20;
+    
+    renderSidebar();
+    
+    window.InvoxiaUtils.showToast('✅ Personalized AI Study Plan Generated!', 'success');
+    btn.innerHTML = '<span>🎯</span> Study Plan Ready';
+    
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }, 3000);
+  };
+
   // Initialize
   renderSidebar();
 

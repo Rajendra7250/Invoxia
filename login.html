@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Control — AIPS</title>
+  <link rel="stylesheet" href="css/global.css">
+  <style>
+    .login-wrapper {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      position: relative; padding: var(--space-xl); overflow: hidden;
+    }
+    
+    /* Setup Background */
+    .bg-orbs { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+    .bg-orbs .orb { position: absolute; border-radius: 50%; filter: blur(100px); }
+    .orb-a { width: 600px; height: 600px; background: radial-gradient(circle, rgba(247,37,133,0.25), transparent 70%); top: -200px; left: -100px; animation: float 8s ease-in-out infinite; }
+    .orb-b { width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,121,0,0.2), transparent 70%); bottom: -100px; right: -100px; animation: float 10s ease-in-out infinite reverse; }
+
+    /* Floating Stickers */
+    .stickers-container { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .sticker {
+      position: absolute; font-size: 3rem; opacity: 0.15; filter: drop-shadow(0 0 15px rgba(247,37,133,0.3));
+      animation: stickerFloat 15s ease-in-out infinite alternate;
+    }
+    .st-1 { top: 15%; left: 15%; animation-delay: 0s; }
+    .st-2 { top: 20%; right: 20%; animation-delay: -2s; font-size: 4rem; opacity: 0.1; }
+    .st-3 { bottom: 20%; left: 25%; animation-delay: -5s; font-size: 2.5rem; filter: drop-shadow(0 0 15px rgba(255,121,0,0.3)); }
+    .st-4 { bottom: 15%; right: 15%; animation-delay: -1s; font-size: 3.5rem; }
+    
+    @keyframes stickerFloat {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(20px, -20px) rotate(10deg); }
+      100% { transform: translate(-10px, 30px) rotate(-10deg); }
+    }
+
+    .auth-card {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-2xl); padding: var(--space-3xl); width: 100%; max-width: 440px;
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative; z-index: 10;
+      animation: fadeInUp 0.8s ease-out; overflow: hidden;
+    }
+    .auth-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-pink), var(--accent-orange), transparent);
+    }
+    
+    .auth-header { text-align: center; margin-bottom: var(--space-2xl); }
+    .brand-icon { font-size: 2.5rem; margin-bottom: var(--space-md); display: inline-block; filter: drop-shadow(0 0 10px rgba(247,37,133,0.5)); }
+    .auth-header h1 { font-family: var(--font-display); font-size: 2rem; color: white; margin-bottom: var(--space-sm); letter-spacing: -0.02em; }
+    .auth-header p { color: var(--accent-orange); font-family: var(--font-mono); font-size: 0.8rem; }
+    
+    /* Toggle */
+    .auth-toggle { display: flex; background: rgba(0,0,0,0.3); border-radius: var(--radius-lg); padding: 4px; margin-bottom: var(--space-xl); border: 1px solid rgba(247,37,133,0.2); }
+    .toggle-btn { flex: 1; padding: 0.5rem; text-align: center; color: var(--neutral-400); font-family: var(--font-mono); font-weight: 600; font-size: 0.8rem; border-radius: var(--radius-md); cursor: pointer; transition: all var(--transition-fast); }
+    .toggle-btn.active { background: rgba(247,37,133,0.15); color: white; border: 1px solid rgba(247,37,133,0.4); box-shadow: 0 0 10px rgba(247,37,133,0.2); }
+    
+    .form-section { display: none; }
+    .form-section.active { display: block; animation: fadeIn 0.4s ease forwards; }
+
+    .form-group { margin-bottom: var(--space-lg); }
+    .form-group label {
+      display: block; color: var(--accent-orange); font-size: 0.75rem; font-weight: 600; margin-bottom: 6px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .form-input {
+      width: 100%; padding: 0.8rem 1rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(247,37,133,0.3);
+      border-radius: var(--radius-md); color: var(--neutral-100); transition: all var(--transition-fast);
+      font-family: var(--font-mono); font-size: 0.9rem;
+    }
+    .form-input:focus { border-color: var(--neon-pink); box-shadow: 0 0 0 3px rgba(247,37,133,0.18), 0 0 12px rgba(247,37,133,0.1); }
+    
+    .btn-auth { width: 100%; justify-content: center; margin-top: var(--space-md); font-family: var(--font-mono); letter-spacing: 0.04em; }
+    .auth-error { color: var(--accent-orange); font-family: var(--font-mono); font-size: 0.8rem; text-align: center; margin-bottom: 15px; display: none; text-shadow: 0 0 5px rgba(255,121,0,0.5); }
+    .auth-success { color: var(--accent-emerald); font-family: var(--font-mono); font-size: 0.8rem; text-align: center; margin-bottom: 15px; display: none; text-shadow: 0 0 5px rgba(6,214,160,0.5); }
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+    <div class="bg-orbs">
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+    </div>
+    
+    <!-- Floating Cyber Stickers Behind Logic -->
+    <div class="stickers-container">
+      <div class="sticker st-1">🚀</div>
+      <div class="sticker st-2">🤖</div>
+      <div class="sticker st-3">📄</div>
+      <div class="sticker st-4">💻</div>
+    </div>
+    
+    <div class="auth-card">
+      <div class="auth-header">
+        <span class="brand-icon">🤖</span>
+        <h1>AIPS System</h1>
+        <p>AI is ready when you are.</p>
+      </div>
+
+      <div class="auth-toggle">
+        <div class="toggle-btn active" id="btnShowLogin" onclick="switchTab('login')">LOGIN</div>
+        <div class="toggle-btn" id="btnShowSignup" onclick="switchTab('signup')">REQUEST ACCESS</div>
+      </div>
+
+      <div id="msgError" class="auth-error">Error connecting to neural net.</div>
+      <div id="msgSuccess" class="auth-success">System Access Granted.</div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="form-section active" onsubmit="event.preventDefault(); handleLogin();">
+        <div class="form-group">
+          <label for="loginEmail">System Credentials (Email)</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="user@interface.net" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Access Key (Password)</label>
+          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" id="loginSubmit" class="btn btn-primary btn-lg btn-auth">Initiate Login →</button>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signupForm" class="form-section" onsubmit="event.preventDefault(); handleSignup();">
+        <div class="form-group">
+          <label for="signupName">Agent Designation (Name)</label>
+          <input type="text" id="signupName" class="form-input" placeholder="E.g., Agent K" required>
+        </div>
+        <div class="form-group">
+          <label for="signupEmail">System Credentials (Email)</label>
+          <input type="email" id="signupEmail" class="form-input" placeholder="user@interface.net" required>
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">Access Key (Password)</label>
+          <input type="password" id="signupPassword" class="form-input" placeholder="••••••••" minlength="4" required>
+        </div>
+        <button type="submit" id="signupSubmit" class="btn btn-primary btn-lg btn-auth">Create Interface Profile →</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://127.0.0.1:5000/api';
+    
+    function switchTab(tab) {
+      document.getElementById('msgError').style.display = 'none';
+      document.getElementById('msgSuccess').style.display = 'none';
+      if (tab === 'login') {
+        document.getElementById('loginForm').classList.add('active');
+        document.getElementById('signupForm').classList.remove('active');
+        document.getElementById('btnShowLogin').classList.add('active');
+        document.getElementById('btnShowSignup').classList.remove('active');
+      } else {
+        document.getElementById('loginForm').classList.remove('active');
+        document.getElementById('signupForm').classList.add('active');
+        document.getElementById('btnShowLogin').classList.remove('active');
+        document.getElementById('btnShowSignup').classList.add('active');
+      }
+    }
+
+    function showMsg(text, type) {
+      if(type === 'error') {
+        document.getElementById('msgError').textContent = text;
+        document.getElementById('msgError').style.display = 'block';
+        document.getElementById('msgSuccess').style.display = 'none';
+      } else {
+        document.getElementById('msgSuccess').textContent = text;
+        document.getElementById('msgSuccess').style.display = 'block';
+        document.getElementById('msgError').style.display = 'none';
+      }
+    }
+
+    async function handleLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const pass = document.getElementById('loginPassword').value;
+      document.getElementById('loginSubmit').textContent = "Authenticating...";
+      
+      try {
+        let res = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, password: pass })
+        });
+        let data = await res.json();
+        
+        if (res.ok) {
+          showMsg(data.message, 'success');
+          localStorage.setItem('aips_user', data.user.name || data.user.email.split('@')[0]);
+          setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+        } else {
+          showMsg(data.error || 'Authentication Failed', 'error');
+        }
+      } catch (err) {
+        showMsg("Neural Net Offline. Is Flask Server Running on port 5000?", 'error');
+      } finally {
+        document.getElementById('loginSubmit').textContent = "Initiate Login →";
+      }
+    }
+
+    async function handleSignup() {
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const pass = document.getElementById('signupPassword').value;
+      document.getElementById('signupSubmit').textContent = "Generating Profile...";
+      
+      try {
+        let res = await fetch(`${API_URL}/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name, email: email, password: pass })
+        });
+        let data = await res.json();
+        
+        if (res.ok) {
+          showMsg(data.message, 'success');
+          setTimeout(() => { switchTab('login'); }, 1500);
+        } else {
+          showMsg(data.error || 'Registration Failed', 'error');
+        }
+      } catch (err) {
+        showMsg("Neural Net Offline. Is Flask Server Running on port 5000?", 'error');
+      } finally {
+        document.getElementById('signupSubmit').textContent = "Create Interface Profile →";
+      }
+    }
+  </script>
+</body>
+</html>

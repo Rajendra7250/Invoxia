@@ -5,6 +5,22 @@
 
 // ---- Navbar Scroll Effect ----
 document.addEventListener('DOMContentLoaded', () => {
+  // Auth Check
+  const aipsUser = localStorage.getItem('aips_user');
+  if (aipsUser) {
+    const navbarActions = document.querySelector('.navbar-actions');
+    if (navbarActions) {
+      navbarActions.innerHTML = `
+        <div class="user-profile" style="display:flex; align-items:center; gap:12px; cursor:pointer; background:rgba(255,255,255,0.05); padding:6px 16px 6px 6px; border-radius:50px; border:1px solid rgba(247,37,133,0.3); transition:all 0.3s;" onclick="if(confirm('Log out of AIPS system?')){localStorage.removeItem('aips_user'); window.location.reload();}" title="Logout">
+          <div class="user-avatar" style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg, var(--neon-pink), var(--accent-orange)); display:flex; align-items:center; justify-content:center; font-weight:bold; color:white; font-family:var(--font-display);">
+            ${aipsUser.charAt(0).toUpperCase()}
+          </div>
+          <span style="color:var(--accent-orange); font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.02em;">${aipsUser}</span>
+        </div>
+      `;
+    }
+  }
+
   const navbar = document.querySelector('.navbar');
   if (navbar) {
     window.addEventListener('scroll', () => {

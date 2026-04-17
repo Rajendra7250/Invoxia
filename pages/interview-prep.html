@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Interview Prep Suite — Invoxia</title>
+  <meta name="description" content="Begin your AI-powered interview preparation journey with Invoxia. Personalized coaching for every role and experience level.">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/interview-prep.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+
+  <!-- ======== NAVBAR ======== -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="navbar-brand">
+        <span class="logo-icon">🤖</span>
+        AIPS
+      </a>
+      <div class="navbar-links" id="navLinks">
+        <a href="../index.html">Home</a>
+        <a href="resume.html">AI Resume Builder</a>
+        <a href="interview-prep.html" class="active">Interview Q&A</a>
+        <a href="mock-interview.html">Mock Simulation</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======== STEP CONTAINER ======== -->
+  <main class="prep-main" id="prepMain">
+
+    <!-- ── STEP 1: Landing ── -->
+    <div class="prep-step active" id="step1">
+      <div class="prep-bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+      <div class="prep-center animate-fadeInUp">
+        <div class="step-badge">🤖 AIPS System</div>
+        <h1 class="prep-hero-title">AI Interview<br><span class="text-gradient">Prep Suite</span></h1>
+        <p class="prep-hero-sub">Your journey to mastery begins here</p>
+        <div class="prep-hero-stats">
+          <div class="stat-pill">AI is ready when you are.</div>
+        </div>
+        <button class="btn btn-primary btn-lg prep-cta" id="btnStart" onclick="goStep(2)">
+          Initiate Access <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STEP 2: Introduce Yourself ── -->
+    <div class="prep-step" id="step2">
+      <div class="prep-center">
+        <div class="prep-card animate-fadeInUp">
+          <div class="prep-card-icon">👤</div>
+          <h2 class="prep-card-title">Introduce Yourself</h2>
+          <p class="prep-card-sub">AI is ready when you are.</p>
+
+          <div class="prep-form">
+            <div class="form-group">
+              <label for="userName">What should the system call you?</label>
+              <input id="userName" class="form-input" type="text" placeholder="e.g. Aarav Sharma" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+              <label for="userRole">Which role are you targeting?</label>
+              <div class="select-wrapper">
+                <select id="userRole" class="form-input">
+                  <option value="Frontend Developer">Frontend Developer</option>
+                  <option value="Backend Developer">Backend Developer</option>
+                  <option value="Full Stack Developer">Full Stack Developer</option>
+                  <option value="Data Analyst">Data Analyst</option>
+                  <option value="Data Scientist">Data Scientist</option>
+                  <option value="UI/UX Designer">UI/UX Designer</option>
+                  <option value="Product Manager">Product Manager</option>
+                  <option value="DevOps Engineer">DevOps Engineer</option>
+                </select>
+                <span class="select-icon">▾</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="userExp">How experienced are you?</label>
+              <div class="select-wrapper">
+                <select id="userExp" class="form-input">
+                  <option value="Fresher">Fresher (0–1 yr)</option>
+                  <option value="1-2 Years">Junior (1–2 yrs)</option>
+                  <option value="3+ Years">Senior (3+ yrs)</option>
+                </select>
+                <span class="select-icon">▾</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="handleContinue()">
+              Continue →
+            </button>
+            <button class="btn btn-secondary" style="width:100%; justify-content:center; margin-top:10px;" onclick="goStep(1)">
+              ← Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 3: Loading ── -->
+    <div class="prep-step" id="step3">
+      <div class="prep-center">
+        <div class="loader-ring">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle class="loader-track" cx="50" cy="50" r="42"/>
+            <circle class="loader-fill" cx="50" cy="50" r="42"/>
+          </svg>
+          <span class="loader-icon">🤖</span>
+        </div>
+        <h2 class="loader-title">Initializing Neural Engine...</h2>
+        <p class="loader-sub" id="loaderMsg">Analyzing Candidate Profile...</p>
+        <div class="loader-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP 4: Dashboard ── -->
+    <div class="prep-step" id="step4">
+      <div class="container" style="padding-top: 110px; padding-bottom: 60px;">
+
+        <!-- Welcome Banner -->
+        <div class="dashboard-welcome animate-fadeInUp">
+          <div>
+            <h1 class="dash-title">Welcome, <span class="text-gradient" id="dashName">User</span> 👋</h1>
+            <p class="dash-meta" id="dashMeta">Role: — | Experience: —</p>
+          </div>
+          <div class="dash-status">
+            <span class="status-dot"></span> AI Dashboard Ready 🚀
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="dash-stats animate-fadeInUp delay-1">
+          <div class="dash-stat-card">
+            <div class="stat-icon">📋</div>
+            <div class="stat-body">
+              <h3 class="stat-num" id="statQuestions">0</h3>
+              <p class="stat-label">Questions Ready</p>
+            </div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-body">
+              <h3 class="stat-num">45</h3>
+              <p class="stat-label">Min Session</p>
+            </div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="stat-icon">🏆</div>
+            <div class="stat-body">
+              <h3 class="stat-num" id="statDiff">—</h3>
+              <p class="stat-label">Difficulty Level</p>
+            </div>
+          </div>
+          <div class="dash-stat-card">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-body">
+              <h3 class="stat-num">AI</h3>
+              <p class="stat-label">Feedback Engine</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Cards -->
+        <div class="dash-cards animate-fadeInUp delay-2">
+          <div class="dash-action-card" onclick="window.location.href='mock-interview.html'">
+            <div class="dac-icon">🎤</div>
+            <h3>Mock Interview</h3>
+            <p>Practice with AI-generated questions tailored to your role.</p>
+            <span class="dac-link">Start Session →</span>
+          </div>
+          <div class="dash-action-card" onclick="window.location.href='resume.html'">
+            <div class="dac-icon">📄</div>
+            <h3>Resume Builder</h3>
+            <p>Create an ATS-optimised resume and get instant AI feedback.</p>
+            <span class="dac-link">Build Resume →</span>
+          </div>
+          <div class="dash-action-card" onclick="window.location.href='revision.html'">
+            <div class="dac-icon">📚</div>
+            <h3>Revision Hub</h3>
+            <p>Study role-specific topics with smart flashcards and notes.</p>
+            <span class="dac-link">Start Revising →</span>
+          </div>
+        </div>
+
+        <!-- Tips Panel -->
+        <div class="dash-tips-panel animate-fadeInUp delay-3">
+          <div class="tips-header">
+            <span>💡 AI Tip for <span id="tipRole">your role</span></span>
+            <button class="tip-refresh" id="btnRefreshTip" onclick="refreshTip()">↻ New Tip</button>
+          </div>
+          <p class="tip-text" id="tipText">Loading your personalised tip...</p>
+        </div>
+
+        <!-- Restart -->
+        <div style="text-align:center; margin-top: 2rem;">
+          <button class="btn btn-secondary" onclick="restart()">🔄 Start Over</button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/interview-prep.js"></script>
+</body>
+</html>

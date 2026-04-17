@@ -15,14 +15,14 @@
   <nav class="navbar scrolled" id="navbar">
     <div class="container">
       <a href="../index.html" class="navbar-brand">
-        <span class="logo-icon">🚀</span>
-        Invoxia
+        <span class="logo-icon">🤖</span>
+        AIPS
       </a>
       <div class="navbar-links" id="navLinks">
         <a href="../index.html">Home</a>
-        <a href="resume.html">Resume Builder</a>
-        <a href="revision.html" class="active">Revision</a>
-        <a href="mock-interview.html">Mock Interview</a>
+        <a href="resume.html">AI Resume Builder</a>
+        <a href="interview-prep.html">Interview Q&A</a>
+        <a href="mock-interview.html">Mock Simulation</a>
       </div>
       <div class="navbar-actions">
         <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
@@ -40,6 +40,11 @@
         <!-- Topic Sidebar -->
         <aside class="topic-sidebar card">
           <h3 style="color: white; font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">📚 Topics</h3>
+          <div style="margin-bottom: 1rem;">
+            <button class="btn btn-primary" id="aiGenerateStudyPlanBtn" onclick="generateAIStudyPlan()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span>🤖</span> Generate AI Study Plan
+            </button>
+          </div>
           <div class="topic-search">
             <span class="search-icon">🔍</span>
             <input type="text" id="topicSearch" placeholder="Search topics..." style="width: 100%; padding: 0.65rem 0.85rem 0.65rem 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid var(--surface-glass-border); border-radius: var(--radius-md); color: var(--neutral-100);">

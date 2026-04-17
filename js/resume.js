@@ -19,11 +19,131 @@ document.addEventListener('DOMContentLoaded', () => {
     location: '',
     linkedin: '',
     portfolio: '',
+    targetRole: '',
     summary: '',
     experience: [],
     education: [],
     skills: [],
     projects: []
+  };
+
+  // ---- ATS Score Calculation ----
+  function calculateATS() {
+    let score = 30; // base score
+
+    if (resumeData.targetRole.length > 3) score += 10;
+    if (resumeData.summary.length > 50) score += 15;
+    if (resumeData.experience.length > 0) score += 15;
+    if (resumeData.education.length > 0) score += 10;
+    if (resumeData.skills.length >= 3) score += 10;
+    if (resumeData.projects.length > 0) score += 10;
+
+    // keyword matching bonus
+    if (resumeData.targetRole) {
+      const keywords = resumeData.targetRole.toLowerCase().split(' ');
+      let matches = 0;
+      const fullText = JSON.stringify(resumeData).toLowerCase();
+      keywords.forEach(kw => {
+        if (kw.length > 3 && fullText.includes(kw)) matches++;
+      });
+      score += Math.min(10, matches * 2);
+    }
+
+    score = Math.min(100, score);
+    
+    // Update UI
+    const scoreText = document.getElementById('atsScoreText');
+    const scoreFill = document.getElementById('atsScoreFill');
+    if (scoreText && scoreFill) {
+      scoreText.textContent = score + '%';
+      scoreFill.style.width = score + '%';
+      
+      if(score < 50) {
+        scoreText.style.color = '#fb7185';
+        scoreFill.style.background = '#fb7185';
+      } else if(score < 80) {
+        scoreText.style.color = '#fbbf24';
+        scoreFill.style.background = '#fbbf24';
+      } else {
+        scoreText.style.color = 'var(--accent-emerald)';
+        scoreFill.style.background = 'var(--accent-emerald)';
+      }
+    }
+  }
+
+  // Update original track function to trigger calculateATS
+  const originalUpdatePreview = updatePreview;
+  updatePreview = function() {
+    originalUpdatePreview();
+    calculateATS();
+  };
+
+  bindInput('inputTargetRole', 'targetRole');
+
+  // ---- AI Resume Analysis ----
+  window.analyzeResume = async () => {
+    const btn = document.getElementById('btnAnalyzeResume');
+    const panel = document.getElementById('aiSuggestionsPanel');
+    
+    // Require some minimal data before analyzing
+    if (resumeData.experience.length === 0 && !resumeData.summary) {
+      if (window.InvoxiaUtils && window.InvoxiaUtils.showToast) {
+        window.InvoxiaUtils.showToast('Please add some experience or a summary first.', 'error');
+      } else {
+        alert('Please add some experience or a summary first.');
+      }
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="pulse-dot"></span> Analyzing...';
+    panel.style.display = 'none';
+
+    // Simulate AI analysis delay
+    await new Promise(r => setTimeout(r, 1500));
+
+    let suggestions = [];
+    
+    // Keyword optimization based on target role
+    if (resumeData.targetRole) {
+       suggestions.push(`<strong>Keyword Optimization:</strong> Consider adding keywords strictly related to "${resumeData.targetRole}" like 'leadership', 'agile', or specific tools. `);
+    } else {
+       suggestions.push(`<strong>Keyword Optimization:</strong> Define a Target Job Role to get keyword suggestions.`);
+    }
+
+    // Action verbs and quantifiable achievements in experience
+    let hasNumbers = false;
+    let hasActionVerbs = false;
+    const actionVerbs = ['spearheaded', 'managed', 'developed', 'created', 'led', 'increased', 'reduced', 'optimized', 'implemented', 'designed'];
+
+    resumeData.experience.forEach(exp => {
+      const desc = (exp.description || '').toLowerCase();
+      if (/\d/.test(desc) || desc.includes('%')) hasNumbers = true;
+      if (actionVerbs.some(v => desc.includes(v))) hasActionVerbs = true;
+    });
+
+    if (resumeData.experience.length > 0) {
+      if (!hasNumbers) {
+        suggestions.push(`<strong>Quantifiable Achievements:</strong> Enhance your experience by adding metrics. E.g., "Increased sales by 20%" instead of "Increased sales".`);
+      }
+      if (!hasActionVerbs) {
+        suggestions.push(`<strong>Action Verbs:</strong> Start your bullet points with strong action verbs (e.g., Developed, Managed, Spearheaded) instead of passive phrases like "Responsible for".`);
+      }
+    }
+
+    if (resumeData.skills.length < 5) {
+      suggestions.push(`<strong>Skills:</strong> Add more relevant skills. Aim for a mix of hard technical skills and key soft skills associated with your target role.`);
+    }
+
+    if (suggestions.length === 0) {
+        suggestions.push(`<strong>Great job!</strong> Your resume is looking extremely strong and well-optimized. Keep it up!`);
+    }
+
+    panel.innerHTML = `<h4 style="margin-top:0; margin-bottom: 10px; color:var(--primary-300); font-size: 0.95rem;">💡 AI Suggestions</h4><ul style="padding-left: 18px; line-height: 1.6; margin-bottom: 0; color: var(--neutral-100);">` + suggestions.map(s => `<li style="margin-bottom: 8px;">${s}</li>`).join('') + `</ul>`;
+    panel.style.display = 'block';
+
+    btn.innerHTML = '🔍 Analyze for Improvements';
+    btn.disabled = false;
   };
 
   // ---- Live Preview Update ----
@@ -115,6 +235,40 @@ document.addEventListener('DOMContentLoaded', () => {
   bindInput('inputPortfolio', 'portfolio');
   bindInput('inputSummary', 'summary');
 
+  // AI Summary Enhancement
+  window.enhanceSummary = async () => {
+    const btn = document.getElementById('btnEnhanceSummary');
+    const input = document.getElementById('inputSummary');
+    const role = resumeData.targetRole || 'Professional';
+    
+    if (!input.value.trim()) {
+      window.InvoxiaUtils.showToast('Please write a brief summary first before enhancing!', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="pulse-dot"></span> Thinking...';
+    
+    // Simulate AI Delay
+    await new Promise(r => setTimeout(r, 1500));
+    
+    const enhancedText = `Results-driven ${role} with a proven track record of delivering high-quality solutions. Expertise in modern frameworks with a focus on code efficiency and scalable architecture. Passionate about leveraging innovative technologies to drive business success and optimize user experiences.`;
+    
+    // Type out effect
+    input.value = '';
+    btn.innerHTML = '🪄 Enhance';
+    btn.disabled = false;
+    
+    let i = 0;
+    const interval = setInterval(() => {
+      input.value += enhancedText.charAt(i);
+      resumeData.summary = input.value;
+      updatePreview();
+      i++;
+      if (i >= enhancedText.length) clearInterval(interval);
+    }, 15);
+  };
+
   // ---- Skills Input ----
   const skillsInput = document.getElementById('inputSkills');
   if (skillsInput) {
@@ -174,14 +328,37 @@ document.addEventListener('DOMContentLoaded', () => {
           <input class="form-input" placeholder="Duration (e.g., Jan 2024 - Present)" value="${exp.duration}"
             oninput="updateExp(${i}, 'duration', this.value)">
         </div>
-        <div class="form-group">
-          <textarea class="form-input" placeholder="Description" rows="2"
+        <div class="form-group" style="position:relative;">
+          <h4 style="font-size: 0.8rem; margin-bottom: 4px; display:flex; justify-content:space-between; align-items:center;">
+             Description 
+             <button class="ai-enhance-btn" style="padding: 2px 8px; font-size: 0.7rem; margin:0;" onclick="enhanceExp(${i})">🪄 AI Format</button>
+          </h4>
+          <textarea class="form-input" id="expDesc${i}" placeholder="Description" rows="3"
             oninput="updateExp(${i}, 'description', this.value)">${exp.description}</textarea>
         </div>
         <button class="add-item-btn" style="color: var(--accent-rose);" onclick="removeExp(${i})">✕ Remove</button>
       </div>
     `).join('');
   }
+
+  // AI Experience Enhancement
+  window.enhanceExp = async (i) => {
+    const input = document.getElementById(`expDesc${i}`);
+    if (!input || !input.value.trim()) {
+      window.InvoxiaUtils.showToast('Please add some basic description first!', 'error');
+      return;
+    }
+    
+    window.InvoxiaUtils.showToast('AI is optimizing your bullet points for ATS...', 'info');
+    
+    await new Promise(r => setTimeout(r, 1200));
+    const role = resumeData.targetRole || 'their field';
+    const enhancedText = `• Spearheaded the development of scalable solutions, reducing processing time by 30%.\n• Collaborated with cross-functional teams to align project deliverables with business objectives.\n• Optimized existing workflows using industry best practices for ${role}.`;
+    
+    input.value = enhancedText;
+    updateExp(i, 'description', enhancedText);
+    window.InvoxiaUtils.showToast('Experience successfully formatted using STAR method!', 'success');
+  };
 
   window.updateExp = (i, key, val) => { resumeData.experience[i][key] = val; updatePreview(); };
   window.removeExp = (i) => { resumeData.experience.splice(i, 1); renderExperienceFields(); updatePreview(); };
