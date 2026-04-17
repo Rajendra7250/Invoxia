@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder — Invoxia</title>
+  <meta name="description" content="Build professional, ATS-friendly resumes with Invoxia's intelligent resume builder. Real-time preview and PDF export.">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/resume.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+</head>
+<body>
+
+  <!-- ======== NAVBAR ======== -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="navbar-brand">
+        <span class="logo-icon">🚀</span>
+        Invoxia
+      </a>
+      <div class="navbar-links" id="navLinks">
+        <a href="../index.html">Home</a>
+        <a href="resume.html" class="active">Resume Builder</a>
+        <a href="revision.html">Revision</a>
+        <a href="mock-interview.html">Mock Interview</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======== RESUME BUILDER ======== -->
+  <main class="resume-page">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 2rem;">
+        <div class="section-label">📄 Resume Builder</div>
+        <h2 style="color: white; font-family: var(--font-display);">Build Your <span class="text-gradient">Professional Resume</span></h2>
+        <p>Fill in the form and watch your resume come to life in real-time.</p>
+      </div>
+
+      <div class="resume-builder-layout">
+        <!-- Form Sidebar -->
+        <aside class="resume-sidebar card" id="resumeForm">
+
+          <!-- Personal Info -->
+          <div class="resume-form-section">
+            <h3>👤 Personal Information</h3>
+            <div class="form-group">
+              <label for="inputFullName">Full Name</label>
+              <input class="form-input" id="inputFullName" type="text" placeholder="John Doe">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inputEmail">Email</label>
+                <input class="form-input" id="inputEmail" type="email" placeholder="john@example.com">
+              </div>
+              <div class="form-group">
+                <label for="inputPhone">Phone</label>
+                <input class="form-input" id="inputPhone" type="tel" placeholder="+91 98765 43210">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputLocation">Location</label>
+              <input class="form-input" id="inputLocation" type="text" placeholder="Mumbai, India">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="inputLinkedin">LinkedIn</label>
+                <input class="form-input" id="inputLinkedin" type="url" placeholder="linkedin.com/in/johndoe">
+              </div>
+              <div class="form-group">
+                <label for="inputPortfolio">Portfolio</label>
+                <input class="form-input" id="inputPortfolio" type="url" placeholder="johndoe.dev">
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div class="resume-form-section">
+            <h3>📝 Professional Summary</h3>
+            <div class="form-group">
+              <label for="inputSummary">Summary</label>
+              <textarea class="form-input" id="inputSummary" placeholder="Brief overview of your professional background and goals..." rows="3"></textarea>
+            </div>
+          </div>
+
+          <!-- Experience -->
+          <div class="resume-form-section">
+            <h3>💼 Experience</h3>
+            <div id="experienceFields"></div>
+            <button class="add-item-btn" onclick="addExperience()">+ Add Experience</button>
+          </div>
+
+          <!-- Education -->
+          <div class="resume-form-section">
+            <h3>🎓 Education</h3>
+            <div id="educationFields"></div>
+            <button class="add-item-btn" onclick="addEducation()">+ Add Education</button>
+          </div>
+
+          <!-- Skills -->
+          <div class="resume-form-section">
+            <h3>⚡ Skills</h3>
+            <div class="form-group">
+              <label for="inputSkills">Add Skills (press Enter or comma)</label>
+              <input class="form-input" id="inputSkills" type="text" placeholder="e.g., JavaScript, React, Node.js">
+            </div>
+            <div id="skillTags" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;"></div>
+          </div>
+
+          <!-- Projects -->
+          <div class="resume-form-section">
+            <h3>🚀 Projects</h3>
+            <div id="projectFields"></div>
+            <button class="add-item-btn" onclick="addProject()">+ Add Project</button>
+          </div>
+
+          <!-- Actions -->
+          <div class="resume-actions">
+            <button class="btn btn-primary" onclick="downloadResume()">📥 Download PDF</button>
+          </div>
+        </aside>
+
+        <!-- Live Preview -->
+        <div class="resume-preview-container" id="resumePreview">
+          <!-- Dynamically rendered by resume.js -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer" style="margin-top: 4rem;">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 Invoxia. Built with ❤️ for interview success.</span>
+        <a href="../index.html" style="color: var(--primary-400);">← Back to Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/resume.js"></script>
+
+  <style>
+    .skill-tag-added {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 12px;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: 999px;
+      color: var(--primary-300);
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .skill-tag-added button {
+      color: var(--accent-rose);
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0 2px;
+    }
+    .skill-tag-added button:hover {
+      color: white;
+    }
+  </style>
+</body>
+</html>

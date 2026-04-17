@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concept Revision — Invoxia</title>
+  <meta name="description" content="Master interview concepts with Invoxia's interactive flashcards, structured notes, and quick quizzes for DSA, System Design, and more.">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/revision.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+
+  <!-- ======== NAVBAR ======== -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="navbar-brand">
+        <span class="logo-icon">🚀</span>
+        Invoxia
+      </a>
+      <div class="navbar-links" id="navLinks">
+        <a href="../index.html">Home</a>
+        <a href="resume.html">Resume Builder</a>
+        <a href="revision.html" class="active">Revision</a>
+        <a href="mock-interview.html">Mock Interview</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======== REVISION MODULE ======== -->
+  <main class="revision-page">
+    <div class="container">
+      <div class="revision-layout">
+
+        <!-- Topic Sidebar -->
+        <aside class="topic-sidebar card">
+          <h3 style="color: white; font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">📚 Topics</h3>
+          <div class="topic-search">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="topicSearch" placeholder="Search topics..." style="width: 100%; padding: 0.65rem 0.85rem 0.65rem 2.5rem; background: rgba(255,255,255,0.05); border: 1px solid var(--surface-glass-border); border-radius: var(--radius-md); color: var(--neutral-100);">
+          </div>
+          <div id="topicList">
+            <!-- Rendered by revision.js -->
+          </div>
+        </aside>
+
+        <!-- Content Area -->
+        <div class="revision-content" id="revisionContent">
+          <!-- Rendered by revision.js -->
+          <div style="text-align: center; padding: 4rem 2rem; color: var(--neutral-500);">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
+            <h2 style="color: var(--neutral-300); font-family: var(--font-display); margin-bottom: 0.5rem;">Select a Topic</h2>
+            <p>Choose a topic from the sidebar to start revising concepts, flashcards, and quizzes.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer" style="margin-top: 4rem;">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 Invoxia. Built with ❤️ for interview success.</span>
+        <a href="../index.html" style="color: var(--primary-400);">← Back to Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/revision.js"></script>
+</body>
+</html>

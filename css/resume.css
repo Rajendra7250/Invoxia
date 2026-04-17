@@ -1,0 +1,187 @@
+/* ============================================
+   INVOXIA - Resume Builder Styles
+   Module Owner: Member 1
+   Branch: feature/resume-builder
+   ============================================ */
+
+.resume-page {
+  padding-top: 100px;
+  min-height: 100vh;
+}
+
+.resume-builder-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: var(--space-xl);
+  min-height: calc(100vh - 200px);
+}
+
+/* Sidebar Form */
+.resume-sidebar {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.resume-form-section {
+  margin-bottom: var(--space-lg);
+}
+
+.resume-form-section h3 {
+  color: var(--primary-300);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+.form-group label {
+  display: block;
+  color: var(--neutral-400);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--surface-glass-border);
+  border-radius: var(--radius-md);
+  color: var(--neutral-100);
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.form-input::placeholder {
+  color: var(--neutral-600);
+}
+
+textarea.form-input {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-sm);
+}
+
+.add-item-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--primary-400);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: var(--space-sm) 0;
+  transition: color var(--transition-fast);
+}
+
+.add-item-btn:hover {
+  color: var(--primary-300);
+}
+
+/* Resume Preview */
+.resume-preview-container {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  color: #1a1a2e;
+  box-shadow: var(--shadow-xl);
+  min-height: 800px;
+}
+
+.resume-preview-container h1 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: #1a1a2e;
+  margin-bottom: var(--space-xs);
+}
+
+.resume-preview-container .contact-line {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-bottom: var(--space-lg);
+}
+
+.resume-section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary-600);
+  border-bottom: 2px solid var(--primary-500);
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.resume-entry {
+  margin-bottom: var(--space-md);
+}
+
+.resume-entry h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.resume-entry .meta {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-bottom: var(--space-xs);
+}
+
+.resume-entry p {
+  color: #334155;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.resume-skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.resume-skill-tag {
+  padding: var(--space-xs) var(--space-md);
+  background: var(--primary-50);
+  color: var(--primary-700);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* Export Actions */
+.resume-actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .resume-builder-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-sidebar {
+    position: static;
+  }
+}

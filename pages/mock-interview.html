@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Interview — Invoxia</title>
+  <meta name="description" content="Practice AI-powered mock interviews with Invoxia. Choose your role, difficulty, and get real-time feedback on your performance.">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/mock-interview.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
+</head>
+<body>
+
+  <!-- ======== NAVBAR ======== -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <a href="../index.html" class="navbar-brand">
+        <span class="logo-icon">🚀</span>
+        Invoxia
+      </a>
+      <div class="navbar-links" id="navLinks">
+        <a href="../index.html">Home</a>
+        <a href="resume.html">Resume Builder</a>
+        <a href="revision.html">Revision</a>
+        <a href="mock-interview.html" class="active">Mock Interview</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======== MOCK INTERVIEW ======== -->
+  <main class="interview-page">
+    <div class="container">
+
+      <!-- Setup Screen -->
+      <div class="interview-setup" id="interviewSetup">
+        <h1>🎙️ <span class="text-gradient">Mock Interview</span></h1>
+        <p>Select your role and difficulty level to start a personalized mock interview session.</p>
+
+        <!-- Role Selection -->
+        <h3 style="color: var(--neutral-300); margin-bottom: 1rem; font-size: 1rem;">Choose Your Role</h3>
+        <div class="role-selector">
+          <div class="role-card card" data-role="frontend" id="roleFrontend">
+            <div class="role-emoji">💻</div>
+            <h3>Frontend Developer</h3>
+            <p>HTML, CSS, JavaScript, React, UI/UX</p>
+          </div>
+          <div class="role-card card" data-role="backend" id="roleBackend">
+            <div class="role-emoji">⚙️</div>
+            <h3>Backend Developer</h3>
+            <p>APIs, Databases, Node.js, Python, System Design</p>
+          </div>
+          <div class="role-card card" data-role="fullstack" id="roleFullstack">
+            <div class="role-emoji">🔧</div>
+            <h3>Full Stack Developer</h3>
+            <p>End-to-end development, Architecture, DevOps</p>
+          </div>
+        </div>
+
+        <!-- Difficulty -->
+        <h3 style="color: var(--neutral-300); margin-bottom: 1rem; font-size: 1rem;">Select Difficulty</h3>
+        <div class="difficulty-selector">
+          <button class="difficulty-btn" data-difficulty="easy" id="diffEasy">🟢 Easy</button>
+          <button class="difficulty-btn active" data-difficulty="intermediate" id="diffIntermediate">🟡 Intermediate</button>
+          <button class="difficulty-btn" data-difficulty="hard" id="diffHard">🔴 Hard</button>
+        </div>
+
+        <!-- Start Button -->
+        <button class="btn btn-primary btn-lg start-interview-btn" id="startInterview">
+          🚀 Start Mock Interview
+        </button>
+      </div>
+
+      <!-- Interview Session -->
+      <div class="interview-session" id="interviewSession">
+        <div class="interview-header">
+          <div class="interview-info">
+            <div class="interview-timer">
+              <span class="timer-icon">⏱️</span>
+              <span id="interviewTimer">00:00</span>
+            </div>
+            <div class="interview-progress">
+              <span id="progressText">1 / 5</span>
+              <div class="progress-bar-mini">
+                <div class="fill" style="width: 20%"></div>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-secondary" onclick="endInterviewManual()" id="endInterviewBtn">
+            ⏹️ End Interview
+          </button>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-container card" id="chatContainer">
+          <!-- Messages rendered by mock-interview.js -->
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input-area">
+          <div class="chat-input-wrapper">
+            <textarea class="chat-input" id="userAnswer" placeholder="Type your answer here..." rows="1"></textarea>
+          </div>
+          <button class="chat-send-btn" id="sendAnswer" title="Send Answer">
+            ➤
+          </button>
+        </div>
+
+        <!-- Feedback Panel -->
+        <div class="feedback-panel" id="feedbackPanel">
+          <div class="feedback-header">
+            <h2>📊 Performance Report</h2>
+            <div class="overall-score">
+              <div class="score-circle" id="overallScore">--</div>
+            </div>
+          </div>
+
+          <div class="feedback-metrics">
+            <div class="metric-card card" data-metric="communication">
+              <h4>Communication</h4>
+              <div class="metric-value">--%</div>
+              <div class="metric-bar">
+                <div class="fill" style="width: 0%; background: var(--gradient-primary);"></div>
+              </div>
+            </div>
+            <div class="metric-card card" data-metric="technical">
+              <h4>Technical</h4>
+              <div class="metric-value">--%</div>
+              <div class="metric-bar">
+                <div class="fill" style="width: 0%; background: var(--accent-cyan);"></div>
+              </div>
+            </div>
+            <div class="metric-card card" data-metric="problemSolving">
+              <h4>Problem Solving</h4>
+              <div class="metric-value">--%</div>
+              <div class="metric-bar">
+                <div class="fill" style="width: 0%; background: var(--accent-emerald);"></div>
+              </div>
+            </div>
+            <div class="metric-card card" data-metric="confidence">
+              <h4>Confidence</h4>
+              <div class="metric-value">--%</div>
+              <div class="metric-bar">
+                <div class="fill" style="width: 0%; background: var(--accent-amber);"></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 2rem;">
+            <button class="btn btn-primary btn-lg" onclick="restartInterview()" id="restartBtn">
+              🔄 Restart Interview
+            </button>
+            <a href="../index.html" class="btn btn-secondary btn-lg" style="margin-left: 1rem;">← Back Home</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer" style="margin-top: 4rem;">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 Invoxia. Built with ❤️ for interview success.</span>
+        <a href="../index.html" style="color: var(--primary-400);">← Back to Home</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/mock-interview.js"></script>
+</body>
+</html>
